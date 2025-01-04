@@ -1,4 +1,4 @@
-# Sacks (v2.0)
+# Sacks (or Ability Sacks)
 
 Sacks is a bukkit plugin that adds custom sack abilities and 10 classes, enchancing the vanilla PVP experience.
 
