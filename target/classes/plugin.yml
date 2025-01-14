@@ -1,0 +1,18 @@
+name: Sacks
+version: '2.0'
+main: me.kafae.sacks.Sacks
+api-version: '1.21'
+commands:
+  ability:
+    description: Use abilities.
+    usage: /ability <ability>
+    permission: op
+    permission-message: You do not have permission to use this command.
+  enderchest:
+    description: Open ender chest
+    usage: /enderchest
+  cgive:
+    description: Give custom items
+    usage: /cgive <item_id> <count>
+    permission: op
+    permission-message: You do not have permission to use this command.
