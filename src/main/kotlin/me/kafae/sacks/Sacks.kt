@@ -26,8 +26,10 @@ class Sacks : JavaPlugin() {
                         n = false
                     }
                     p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent("§f${playerData.energy}/100§e ⚡"))
-                    val c: SignatureClasses.Signature = SignatureClasses.getClass(p)
-                    c.passive(p)
+                    if (DataStore.player["${p.uniqueId}"]!!.shells >= 0) {
+                        val c: SignatureClasses.Signature = SignatureClasses.getClass(p)
+                        c.passive(p)
+                    }
                 }
             }
         }.runTaskTimer(this, 0L, 20L)
@@ -36,7 +38,7 @@ class Sacks : JavaPlugin() {
     override fun onEnable() {
         SignatureClasses.plugin = this
         if (!DataStore.load()) {
-            logger.warning("Data file not found! Ignoring it!")
+            logger.warning("Data file not found! Creating ono")
             DataStore.player = mutableMapOf()
         } else {
             logger.info("Loaded all saved data!")

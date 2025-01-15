@@ -1,13 +1,16 @@
 package me.kafae.sacks.listeners
 
 import me.kafae.sacks.gui.SacksGUI
+import me.kafae.sacks.objects.Abilities
 import me.kafae.sacks.objects.CItems
+import me.kafae.sacks.objects.DataStore
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
 
 class InventoryListener: Listener {
 
@@ -18,7 +21,44 @@ class InventoryListener: Listener {
                 e.isCancelled = true
                 when (e.slot) {
                     11 -> return //SacksGUI.craft.main(e.whoClicked as Player)
-                    15 -> return //SacksGUI.ability(e.whoClicked as Player)
+                    15 -> SacksGUI.ability(e.whoClicked as Player)
+                }
+            }
+            "§eAbility Slots" -> {
+                val p: Player = e.whoClicked as Player
+                when (e.slot) {
+                    11 -> e.isCancelled = true
+                    13, 15 -> {
+                        e.isCancelled = true
+                        var index: Int = 0
+                        if (e.slot == 15) {
+                            index++
+                        }
+                        if (DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] != null) {
+                            Abilities.getShard(DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index]!!).givePlayer(p, 1)
+                            DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = null
+                            SacksGUI.ability(p)
+                        } else {
+                            val item: ItemStack = e.cursor?: return
+                            if (item.type != Material.AIR && item.hasItemMeta()) {
+                                if (item.itemMeta!!.hasCustomModelData()) {
+                                    return when (item.itemMeta!!.customModelData) {
+                                        5001 -> {
+                                            DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = "dragons_breathe"
+                                            p.sendMessage("§2You equipped ability ${CItems.Rarity.MYTHIC.s}Dragon's Breath §2to your 1st slot!")
+                                            SacksGUI.ability(p)
+                                        }
+                                        5002 -> {
+                                            DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = "dragons_breathe"
+                                            p.sendMessage("§2You equipped ability ${CItems.Rarity.EPIC.s}Dragon's Breath §2to your 1st slot!")
+                                            SacksGUI.ability(p)
+                                        }
+                                        else -> return
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

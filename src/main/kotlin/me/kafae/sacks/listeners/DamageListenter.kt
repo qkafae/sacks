@@ -1,5 +1,6 @@
 package me.kafae.sacks.listeners
 
+import me.kafae.sacks.functions.damagePlayer
 import me.kafae.sacks.objects.DataStore
 import me.kafae.sacks.objects.Energy
 import me.kafae.sacks.objects.SignatureClasses
@@ -23,13 +24,17 @@ class DamageListenter: Listener {
                     val chance: Int = (50 + ((DataStore.player["${p.uniqueId}"]?.shells ?: 0) * 5)).coerceAtMost(100)
                     val rng: Int = Random.nextInt(1 , 100)
                     if (rng in 1..chance) {
-                        (e.entity as Player).damage(1.0)
+                        damagePlayer((e.entity as Player), 1.0)
                     }
                 }
                 SignatureClasses.thunder -> {
                     val p: Player = e.damager as Player
-                    if (p.saturation > 1) {
-                        p.saturation--
+                    if (Random.nextInt(1, 4) == 2) {
+                        if (p.saturation > 1) {
+                            p.saturation--
+                            Energy.add(1, p)
+                        }
+                    } else {
                         Energy.add(1, p)
                     }
                 }

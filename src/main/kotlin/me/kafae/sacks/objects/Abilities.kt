@@ -1,6 +1,10 @@
 package me.kafae.sacks.objects
 
+import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 object Abilities {
@@ -21,7 +25,9 @@ object Abilities {
             }
 
             val unitVector = Vector(p.location.direction.x, 0.0, p.location.direction.z)
-            p.velocity = unitVector.multiply(2.0)
+            val location: Location = p.location.add(p.location.direction.multiply(-0.5)).add(0.0, 1.5, 0.0)
+            p.world.spawnParticle(Particle.CLOUD, location, 10, 0.2, 0.2, 0.2, 0.05)
+            p.velocity = unitVector.multiply(3.0)
             p.sendMessage("§bUsed ability Dash §f| §e-50 ⚡")
         }
 
@@ -33,6 +39,14 @@ object Abilities {
         return when (n.lowercase()) {
             "dash" -> dash
             else -> dash
+        }
+    }
+
+    fun getShard(n: String): CItems.Item {
+        return when (n.lowercase()) {
+            "dragons_breath" -> CItems.dragonAbilityShard
+            "dash" -> CItems.breezeAbilityShard
+            else -> CItems.breezeAbilityShard
         }
     }
 }

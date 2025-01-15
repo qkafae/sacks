@@ -20,7 +20,7 @@ class JoinListener: Listener {
 
             val c: SignatureClasses.Signature = SignatureClasses.list.random()
             DataStore.player["${p.uniqueId}"]!!.signatureClass = c.name
-            p.sendMessage("§aYou got class:", "${c.color}${c.name.replaceFirstChar { it.titlecase() }}")
+            p.sendMessage("§aYou got class: " + c.color + c.name.replaceFirstChar { it.titlecase() })
 
             CItems.sack.givePlayer(p, 1)
         }

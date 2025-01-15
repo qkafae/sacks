@@ -1,5 +1,6 @@
 package me.kafae.sacks.objects
 
+import me.kafae.sacks.functions.damageEntity
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -67,7 +68,7 @@ object SignatureClasses {
                     val nearbyEntities = p.getNearbyEntities(5.0, 5.0, 5.0)
                     nearbyEntities?.forEach { e: Entity? ->
                         if (e is LivingEntity && e !is Villager && e != p) {
-                            e.damage(2.0)
+                            damageEntity(e, 2.0)
                             e.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 30, 2))
                             e.world.playSound(e, Sound.ENTITY_GENERIC_SPLASH, 1.0f, 1.0f)
                         }
@@ -140,7 +141,7 @@ object SignatureClasses {
             nearbyEntities?.forEach { e: Entity? ->
                 if (e is LivingEntity && e !is Villager && e != p) {
                     e.world.playSound(e, Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f)
-                    e.damage(dmg)
+                    damageEntity(e, dmg)
                     e.velocity = Vector(0.0, 2.0, 0.0)
                 }
             }

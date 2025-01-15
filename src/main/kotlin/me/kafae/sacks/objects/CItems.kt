@@ -37,11 +37,11 @@ object CItems {
         fun getItem(n: Int): ItemStack {
             val itemstack: ItemStack = ItemStack(material, n)
             val itemmeta: ItemMeta? = itemstack.itemMeta
-            val temp: List<String> = listOf("", rarity.s + "§l" + rarity.n.uppercase() + " " + "ITEM", " ", "ID: $id")
+            val temp: List<String> = listOf("", rarity.s + "§l" + rarity.n.uppercase() + " " + "ITEM")
 
             itemmeta?.let {
                 it.setDisplayName(rarity.s + name)
-                it.lore = (lore + temp).map { index -> "§7$index" }
+                it.lore = (listOf("") + lore + temp).map { index -> "§7$index" }
                 it.setCustomModelData(customModelData)
                 if (hasGlint) {
                     it.addEnchant(Enchantment.MENDING, 1, true)
@@ -69,6 +69,11 @@ object CItems {
         override val customModelData: Int = 1000
 
         override fun onRightClick(p: Player) {
+            if (DataStore.player["${p.uniqueId}"]!!.shells < 0) {
+                p.sendMessage("§You are too weak to use abilities")
+                return
+            }
+
             val c: SignatureClasses.Signature = SignatureClasses.getClass(p)
             c.ability(p)
         }
@@ -78,12 +83,22 @@ object CItems {
                 return
             }
 
+            if (DataStore.player["${p.uniqueId}"]!!.shells < 0) {
+                p.sendMessage("§You are too weak to use abilities")
+                return
+            }
+
             val ability: Abilities.Ability = Abilities.getAbility(DataStore.player["${p.uniqueId}"]!!.equippedAbilities[0]!!)
             ability.useAbility(p)
         }
 
         override fun onShiftRightClick(p: Player) {
             if (DataStore.player["${p.uniqueId}"]!!.equippedAbilities[1] == null) {
+                return
+            }
+
+            if (DataStore.player["${p.uniqueId}"]!!.shells < 0) {
+                p.sendMessage("§You are too weak to use abilities")
                 return
             }
 
@@ -130,15 +145,96 @@ object CItems {
         }
     }
 
+    class AbilityShard: Item("ability_shard_unrefined") {
+        override val name: String = "Ability Shard (Unrefined)"
+        override val material: Material = Material.IRON_INGOT
+        override val lore: List<String> = listOf("The key to abilities", "§eRefine §7it inside the menu", "of your Sack")
+        override val rarity: Rarity = Rarity.RARE
+        override val hasGlint: Boolean = false
+        override val customModelData: Int = 5000
+
+        override fun onRightClick(p: Player) {
+            return
+        }
+
+        override fun onLeftClick(p: Player) {
+            return
+        }
+
+        override fun onShiftRightClick(p: Player) {
+            return
+        }
+
+        override fun onShiftLeftClick(p: Player) {
+            return
+        }
+    }
+
+    class DragonAbilityShard: Item("ability_shard_dragon") {
+        override val name: String = "Ability Shard (Dragon)"
+        override val material: Material = Material.IRON_INGOT
+        override val lore: List<String> = listOf("A §erefined §7ability shard, housing", "the ability ${Rarity.MYTHIC.s}Dragon's Breath")
+        override val rarity: Rarity = Rarity.MYTHIC
+        override val hasGlint: Boolean = false
+        override val customModelData: Int = 5001
+
+        override fun onRightClick(p: Player) {
+            return
+        }
+
+        override fun onLeftClick(p: Player) {
+            return
+        }
+
+        override fun onShiftRightClick(p: Player) {
+            return
+        }
+
+        override fun onShiftLeftClick(p: Player) {
+            return
+        }
+    }
+
+    class BreezeAbilityShard: Item("ability_shard_breeze") {
+        override val name: String = "Ability Shard (Breeze)"
+        override val material: Material = Material.IRON_INGOT
+        override val lore: List<String> = listOf("A §erefined §7ability shard, housing", "the ability ${Rarity.EPIC.s}Dash")
+        override val rarity: Rarity = Rarity.EPIC
+        override val hasGlint: Boolean = false
+        override val customModelData: Int = 5002
+
+        override fun onRightClick(p: Player) {
+            return
+        }
+
+        override fun onLeftClick(p: Player) {
+            return
+        }
+
+        override fun onShiftRightClick(p: Player) {
+            return
+        }
+
+        override fun onShiftLeftClick(p: Player) {
+            return
+        }
+    }
+
+
     val sack: Item = Sack()
     val shell: Item = Shell()
+    val abilityShard: Item = AbilityShard()
+    val dragonAbilityShard: Item = DragonAbilityShard()
+    val breezeAbilityShard: Item = BreezeAbilityShard()
 
     fun getItem(s: String): Item {
         return when (s.lowercase()) {
             sack.id -> sack
             shell.id -> shell
+            abilityShard.id -> abilityShard
+            dragonAbilityShard.id -> dragonAbilityShard
+            breezeAbilityShard.id -> dragonAbilityShard
             else -> sack
         }
     }
-
 }
