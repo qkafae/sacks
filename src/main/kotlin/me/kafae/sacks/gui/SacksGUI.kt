@@ -62,8 +62,8 @@ object SacksGUI {
 
         val cls: ItemStack = CItems.sack.getItem(1)
         val clmeta: ItemMeta = cls.itemMeta!!
-        clmeta.lore = listOf("§dClass§f: ${pcls.color + pcls.name.replaceFirstChar { it.titlecase() }}", "", "§eShell§f: ${DataStore.player["${p.uniqueId}"]!!.shells}")
-        clmeta.setDisplayName("§f--Player Information--")
+        clmeta.lore = listOf("", "§eShell§f: ${DataStore.player["${p.uniqueId}"]!!.shells}")
+        clmeta.setDisplayName("§dClass§f: ${pcls.color + pcls.name.replaceFirstChar { it.titlecase() }}")
         cls.itemMeta = clmeta
 
         val s1: ItemStack

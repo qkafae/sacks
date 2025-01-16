@@ -12,10 +12,6 @@ class Commands: CommandExecutor {
                 abilityCommand(sender, args)
                 true
             }
-            "enderchest" -> {
-                ecCommand(sender, args)
-                true
-            }
             "cgive" -> {
                 giveCommand(sender, args)
                 true

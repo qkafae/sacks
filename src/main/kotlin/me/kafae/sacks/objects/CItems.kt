@@ -1,8 +1,10 @@
 package me.kafae.sacks.objects
 
 import com.sun.org.apache.xpath.internal.operations.Bool
+import me.kafae.sacks.functions.removeItem
 import me.kafae.sacks.gui.SacksGUI
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag
@@ -98,7 +100,7 @@ object CItems {
             }
 
             if (DataStore.player["${p.uniqueId}"]!!.shells < 0) {
-                p.sendMessage("§You are too weak to use abilities")
+                p.sendMessage("§4You are too weak to use abilities")
                 return
             }
 
@@ -122,11 +124,11 @@ object CItems {
         override fun onRightClick(p: Player) {
             if (DataStore.player["${p.uniqueId}"]!!.shells < 10) {
                 DataStore.player["${p.uniqueId}"]!!.shells++
-                p.sendMessage("§6You have gain +1 Energy Shell")
+                p.sendMessage("§6You have gained +1 Energy Shell, you are now at ${DataStore.player["${p.uniqueId}"]!!.shells} shells")
                 val item: ItemStack = p.inventory.itemInMainHand
-                item.amount = 1
-                p.inventory.removeItem(item)
+                removeItem(p, item, 1)
                 p.world.strikeLightningEffect(p.location)
+                p.playSound(p, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
             } else {
                 p.sendMessage("§4You already have the maximum amount of energy shells!")
             }

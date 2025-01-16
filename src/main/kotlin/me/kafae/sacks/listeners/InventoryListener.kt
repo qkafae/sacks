@@ -9,6 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 
@@ -26,10 +27,12 @@ class InventoryListener: Listener {
             }
             "§eAbility Slots" -> {
                 val p: Player = e.whoClicked as Player
+                if (e.clickedInventory != e.whoClicked.inventory || e.click == ClickType.SHIFT_LEFT || e.click == ClickType.SHIFT_RIGHT) {
+                    e.isCancelled = true
+                }
                 when (e.slot) {
-                    11 -> e.isCancelled = true
+                    11 -> return
                     13, 15 -> {
-                        e.isCancelled = true
                         var index: Int = 0
                         if (e.slot == 15) {
                             index++
@@ -42,7 +45,7 @@ class InventoryListener: Listener {
                             val item: ItemStack = e.cursor?: return
                             if (item.type != Material.AIR && item.hasItemMeta()) {
                                 if (item.itemMeta!!.hasCustomModelData()) {
-                                    return when (item.itemMeta!!.customModelData) {
+                                    when (item.itemMeta!!.customModelData) {
                                         5001 -> {
                                             DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = "dragons_breathe"
                                             p.sendMessage("§2You equipped ability ${CItems.Rarity.MYTHIC.s}Dragon's Breath §2to your 1st slot!")
@@ -55,10 +58,12 @@ class InventoryListener: Listener {
                                         }
                                         else -> return
                                     }
+                                    p.inventory.removeItem(e.cursor)
                                 }
                             }
                         }
                     }
+                    else -> return
                 }
             }
         }

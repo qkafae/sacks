@@ -17,6 +17,7 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.util.Vector
 import kotlin.math.cos
+import kotlin.math.floor
 import kotlin.math.sin
 
 object SignatureClasses {
@@ -154,6 +155,7 @@ object SignatureClasses {
 
         override fun passive(p: Player) {
             p.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40, 0))
+            p.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 40, 0))
         }
 
         override fun ability(p: Player) {
@@ -222,10 +224,11 @@ object SignatureClasses {
         override fun passive(p: Player) {
             p.addPotionEffect(PotionEffect(PotionEffectType.HASTE, 40, 0))
             p.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 40, 1))
+            p.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 40, 0))
         }
 
         override fun ability(p: Player) {
-            val cst: Int = (25 - ((DataStore.player["${p.uniqueId}"]?.shells ?: 0) * 5)).coerceAtLeast(5)
+            val cst: Int = (25 - (floor(((DataStore.player["${p.uniqueId}"]?.shells ?: 0) / 2).toDouble()).toInt() * 5)).coerceAtLeast(5)
 
             if (!Energy.subtract(cst, p)) {
                 p.sendMessage("§4You do not have enough Energy to use this ability!")
@@ -246,6 +249,7 @@ object SignatureClasses {
 
         override fun passive(p: Player) {
             p.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 40, 0))
+            p.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 40, 0))
         }
 
         override fun ability(p: Player) {
@@ -315,8 +319,7 @@ object SignatureClasses {
         override val color: String = "§c"
 
         override fun passive(p: Player) {
-            //no need
-            return
+            p.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 40, 0))
         }
 
         override fun ability(p: Player) {
@@ -340,8 +343,6 @@ object SignatureClasses {
                 if (e is LivingEntity && e !is Villager && e != p) {
                     e.world.strikeLightning(e.location)
                     e.world.createExplosion(e.location, 2.5f, false)
-                    e.removePotionEffect(PotionEffectType.STRENGTH)
-                    e.removePotionEffect(PotionEffectType.SPEED)
                     e.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
                 }
             }
