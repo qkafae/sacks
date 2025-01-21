@@ -41,7 +41,7 @@ class DamageListenter: Listener {
                 SignatureClasses.undead -> {
                     val p: Player = e.damager as Player
                     if (p in DataStore.isHarvest) {
-                        p.health = (p.health + (e.damage / 10)).coerceAtMost(20.0)
+                        p.health = (p.health + (e.damage / 4)).coerceAtMost(20.0)
                     }
                 }
                 else -> return

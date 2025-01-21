@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 fun damageEntity(e: LivingEntity, n: Double) {
     var h: Double = e.health
     h = (h - n).coerceAtLeast(0.0)
-    e.world.playSound(e.location, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f)
+    e.world.playSound(e.location, Sound.ENTITY_GENERIC_HURT, 1.0f, 1.0f)
     e.health = h
 }
 

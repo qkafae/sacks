@@ -16,6 +16,10 @@ class Commands: CommandExecutor {
                 giveCommand(sender, args)
                 true
             }
+            "sack" -> {
+                sackCommand(sender)
+                true
+            }
             else -> false
         }
     }

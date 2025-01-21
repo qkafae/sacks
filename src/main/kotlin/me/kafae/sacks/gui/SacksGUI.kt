@@ -14,51 +14,9 @@ import org.bukkit.inventory.meta.ItemMeta
 object SacksGUI {
 
     fun main(p: Player) {
-        val gui: Inventory = Bukkit.createInventory(p, 27, CItems.sack.name)
-
-        val craft: ItemStack = ItemStack(Material.CRAFTING_TABLE)
-        val crmeta: ItemMeta = craft.itemMeta!!
-        crmeta!!.setDisplayName("§eCrafting")
-        craft.itemMeta = crmeta
-
-        val abt: ItemStack = ItemStack(Material.NETHER_STAR)
-        val ameta: ItemMeta = craft.itemMeta!!
-        ameta!!.setDisplayName("§eAbility Slots")
-        abt.itemMeta = ameta
-
-        gui.setItem(11, craft)
-        gui.setItem(15, abt)
-
-        p.openInventory(gui)
-    }
-
-    object craft {
-
-        fun abilityShard() {
-            TODO()
-        }
-
-        fun dragon() {
-            TODO()
-        }
-
-        fun breeze() {
-            TODO()
-        }
-
-        fun shell() {
-            TODO()
-        }
-
-        fun rrbook() {
-            TODO()
-        }
-    }
-
-    fun ability(p: Player) {
         val pcls: SignatureClasses.Signature = SignatureClasses.getClass(p)
 
-        val gui: Inventory = Bukkit.createInventory(p, 27, "§eAbility Slots")
+        val gui: Inventory = Bukkit.createInventory(p, 27, CItems.sack.name)
 
         val cls: ItemStack = CItems.sack.getItem(1)
         val clmeta: ItemMeta = cls.itemMeta!!
@@ -93,5 +51,4 @@ object SacksGUI {
 
         p.openInventory(gui)
     }
-
 }

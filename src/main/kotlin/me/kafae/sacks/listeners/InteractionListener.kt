@@ -24,11 +24,13 @@ class InteractionListener: Listener {
                                 when (e.item!!.itemMeta!!.customModelData) { //shift right click
                                     CItems.sack.customModelData -> CItems.sack.onShiftRightClick(e.player)
                                     CItems.shell.customModelData -> CItems.shell.onShiftRightClick(e.player)
+                                    CItems.rerollBook.customModelData -> CItems.rerollBook.onShiftRightClick(e.player)
                                 }
                             } else {
                                 when (e.item!!.itemMeta!!.customModelData) { //right click
                                     CItems.sack.customModelData -> CItems.sack.onRightClick(e.player)
                                     CItems.shell.customModelData -> CItems.shell.onRightClick(e.player)
+                                    CItems.rerollBook.customModelData -> CItems.rerollBook.onRightClick(e.player)
                                 }
                             }
                         }

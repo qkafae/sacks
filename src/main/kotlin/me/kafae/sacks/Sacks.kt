@@ -1,8 +1,10 @@
 package me.kafae.sacks
 
 import me.kafae.sacks.command.Commands
+import me.kafae.sacks.functions.enchantCheck
 import me.kafae.sacks.listeners.*
 import me.kafae.sacks.objects.*
+import me.kafae.sacks.recipes.*
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
@@ -19,6 +21,7 @@ class Sacks : JavaPlugin() {
             private var n: Boolean = false
             override fun run() {
                 for (p in Bukkit.getOnlinePlayers()) {
+                    enchantCheck(p)
                     var playerData: DataStore.PlayerData
                     if (!n) {
                         playerData = Energy.add(50, p)
@@ -48,6 +51,29 @@ class Sacks : JavaPlugin() {
         }.runTaskTimer(this, 0L, 20L)
     }
 
+    //checks
+    private fun checks() {
+        object: BukkitRunnable() {
+            override fun run() {
+                for (p in Bukkit.getOnlinePlayers()) {
+                    when (SignatureClasses.getClass(p)) {
+                        SignatureClasses.water -> {
+                            if (p.isInWater) {
+                                p.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 40 ,0))
+                                p.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 40 ,0))
+                            }
+                        }
+                        SignatureClasses.fire -> {
+                            if (p.isVisualFire) {
+                                p.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 40 ,0))
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0L, 20L)
+    }
+
     override fun onEnable() {
         SignatureClasses.plugin = this
         if (!DataStore.load()) {
@@ -59,6 +85,7 @@ class Sacks : JavaPlugin() {
 
         this.getCommand("ability")?.setExecutor(Commands())
         this.getCommand("cgive")?.setExecutor(Commands())
+        this.getCommand("sack")?.setExecutor(Commands())
         logger.info("Registered all commands")
 
         server.pluginManager.registerEvents(JoinListener(), this) //player join event listener
@@ -67,15 +94,28 @@ class Sacks : JavaPlugin() {
         server.pluginManager.registerEvents(InteractionListener(), this)  //interaction listener
         server.pluginManager.registerEvents(InventoryListener(), this) //inv listener
         server.pluginManager.registerEvents(DeathListener(), this) //death listener
+        server.pluginManager.registerEvents(CraftingListener(), this) //crafting listener
+        server.pluginManager.registerEvents(RespawnListener(), this) //respawn listener
         logger.info("Registered all events!")
-        regen()
+
+        shellRecipe(this) //energy shell recipe
+        rerollRecipe(this) //reroll recipe
+        shardRecipe(this) //shard recipe
+        breezeRecipe(this) //breeze recipe
+        dragonRecipe(this) //dragon recipe
+        logger.info("Registered all recipes")
+
+        regen() //energy regen
+        checks() //checks
         logger.info("Running tasks in the background!")
+
         logger.info("Sacks Loaded!")
     }
 
     override fun onDisable() {
         DataStore.save()
         logger.info("Saved all data!")
+
         logger.info("Sacks disabled!")
     }
 }

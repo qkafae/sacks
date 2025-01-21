@@ -31,7 +31,6 @@ class DeathListener: Listener {
         }
         e.entity.sendMessage("§4You lost $drop shell, you are now at ${DataStore.player["${e.entity.uniqueId}"]!!.shells} shells")
         e.drops.remove(CItems.sack.getItem(1))
-        CItems.sack.givePlayer(e.entity)
     }
 
 }

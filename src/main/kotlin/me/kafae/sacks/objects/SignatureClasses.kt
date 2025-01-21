@@ -2,6 +2,7 @@ package me.kafae.sacks.objects
 
 import me.kafae.sacks.functions.damageEntity
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.EnderPearl
@@ -47,8 +48,8 @@ object SignatureClasses {
             }
             p.sendMessage("§bUsed ability$color Tsunami §f| §e-70 ⚡")
 
-            var duration: Int = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(15)
-            val center: Location = p.location.add(0.0, 2.0, 0.0)
+            var duration: Int = 5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
+            val damage: Double = 2.0 + floor((DataStore.player["${p.uniqueId}"]?.shells ?: 0).toDouble() / 2.5)
 
             object : BukkitRunnable() {
                 override fun run() {
@@ -57,11 +58,13 @@ object SignatureClasses {
                         return
                     }
 
+                    val center: Location = p.location.add(0.0, 0.5, 0.0)
+
                     for (angle in 0..360) {
                         val x = 5.0 * cos(Math.toRadians(angle.toDouble()))
                         val z = 5.0 * sin(Math.toRadians(angle.toDouble()))
                         val particleLocation: Location = center.clone().add(x, 0.0, z)
-                        p.world.spawnParticle(Particle.DRIPPING_WATER, particleLocation, 1)
+                        p.world.spawnParticle(Particle.SPLASH, particleLocation, 5)
                     }
 
                     p.playSound(p, Sound.ENTITY_GENERIC_SPLASH, 1.0f, 1.0f)
@@ -69,7 +72,7 @@ object SignatureClasses {
                     val nearbyEntities = p.getNearbyEntities(5.0, 5.0, 5.0)
                     nearbyEntities?.forEach { e: Entity? ->
                         if (e is LivingEntity && e !is Villager && e != p) {
-                            damageEntity(e, 2.0)
+                            damageEntity(e, damage)
                             e.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 30, 2))
                             e.world.playSound(e, Sound.ENTITY_GENERIC_SPLASH, 1.0f, 1.0f)
                         }
@@ -96,7 +99,7 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Fog §f| §e-70 ⚡")
 
-            var duration: Int = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(15)
+            var duration: Int = 5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
 
             DataStore.isFog.add(p)
             p.playSound(p, Sound.BLOCK_ANVIL_FALL, 1.0f, 1.0f)
@@ -126,8 +129,8 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Earthquake §f| §e-70 ⚡")
 
-            val r: Int = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(13)
-            val dmg: Double = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(13).toDouble()
+            val r: Int = 5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
+            val dmg: Double = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).toDouble()
 
             for (angle in 0..360) {
                 val x = r * cos(Math.toRadians(angle.toDouble()))
@@ -166,7 +169,7 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Fireball §f| §e-70 ⚡")
 
-            val count: Int = (3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(10)
+            val count: Int = 3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
 
             object : BukkitRunnable() {
                 var currentCount = 0
@@ -203,7 +206,7 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Harvest §f| §e-70 ⚡")
 
-            var duration: Int = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(13)
+            var duration: Int = 5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
 
             DataStore.isHarvest.add(p)
             p.playSound(p, Sound.ENTITY_BREEZE_SHOOT, 1.0f, 1.0f)
@@ -260,7 +263,7 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Poison Ivy §f| §e-70 ⚡")
 
-            val n: Int = (3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(13)
+            val n: Int = 3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
 
             p.world.playSound(p, Sound.ENTITY_VEX_CHARGE, 1.0f, 1.0f)
 
@@ -297,7 +300,7 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Support §f| §e-70 ⚡")
 
-            val cnt: Int = (1 +((DataStore.player["${p.uniqueId}"]?.shells ?: 0) / 2)).coerceAtMost(5)
+            val cnt: Int = 1 +((DataStore.player["${p.uniqueId}"]?.shells ?: 0) / 2)
             for (i in 1..cnt) {
                 val golem: IronGolem = p.world.spawn(p.location, IronGolem::class.java)
                 try {
@@ -330,19 +333,22 @@ object SignatureClasses {
 
             p.sendMessage("§bUsed ability$color Strike §f| §e-100 ⚡")
 
-            val r: Double = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(15).toDouble()
+            val r: Double = (5 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).toDouble()
 
             for (angle in 0..360 step 10) {
                 val x = r * cos(Math.toRadians(angle.toDouble()))
                 val z = r * sin(Math.toRadians(angle.toDouble()))
                 val particleLocation: Location = p.location.clone().add(x, 0.0, z)
-                p.world.strikeLightningEffect(particleLocation)
+                p.world.spawnParticle(Particle.LANDING_HONEY, particleLocation, 10)
             }
 
             for (e in p.getNearbyEntities(r, r, r)) {
                 if (e is LivingEntity && e !is Villager && e != p) {
-                    e.world.strikeLightning(e.location)
-                    e.world.createExplosion(e.location, 2.5f, false)
+                    e.world.strikeLightningEffect(e.location)
+                    damageEntity(e, 10.0)
+                    e.fireTicks = 1000
+                    e.location.block.type = Material.COBWEB
+                    p.addPotionEffect(PotionEffect(PotionEffectType.HUNGER, 100, 0))
                     e.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
                 }
             }
@@ -366,7 +372,7 @@ object SignatureClasses {
             p.sendMessage("§bUsed ability$color Assault §f| §e-70 ⚡")
 
             val particleLocation = p.location.clone().add(0.0, 2.0, 0.0)
-            val n: Int = (3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)).coerceAtMost(10)
+            val n: Int = 3 + (DataStore.player["${p.uniqueId}"]?.shells ?: 0)
 
             p.world.spawnParticle(Particle.ELECTRIC_SPARK, particleLocation, 5)
             p.playSound(p, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 0.8f, 1.0f)
@@ -385,7 +391,7 @@ object SignatureClasses {
         }
     }
 
-    private val water = Water()
+    val water = Water()
     val sky = Sky()
     private val earth = Earth()
     val fire = Fire()

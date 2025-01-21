@@ -147,9 +147,9 @@ object CItems {
         }
     }
 
-    class AbilityShard: Item("ability_shard_unrefined") {
+    class AbilityShard: Item("ability_shard") {
         override val name: String = "Ability Shard (Unrefined)"
-        override val material: Material = Material.IRON_INGOT
+        override val material: Material = Material.PRISMARINE_SHARD
         override val lore: List<String> = listOf("The key to abilities", "§eRefine §7it inside the menu", "of your Sack")
         override val rarity: Rarity = Rarity.RARE
         override val hasGlint: Boolean = false
@@ -172,12 +172,12 @@ object CItems {
         }
     }
 
-    class DragonAbilityShard: Item("ability_shard_dragon") {
+    class DragonAbilityShard: Item("dragon_ability_shard") {
         override val name: String = "Ability Shard (Dragon)"
-        override val material: Material = Material.IRON_INGOT
+        override val material: Material = Material.PRISMARINE_SHARD
         override val lore: List<String> = listOf("A §erefined §7ability shard, housing", "the ability ${Rarity.MYTHIC.s}Dragon's Breath")
         override val rarity: Rarity = Rarity.MYTHIC
-        override val hasGlint: Boolean = false
+        override val hasGlint: Boolean = true
         override val customModelData: Int = 5001
 
         override fun onRightClick(p: Player) {
@@ -197,12 +197,12 @@ object CItems {
         }
     }
 
-    class BreezeAbilityShard: Item("ability_shard_breeze") {
+    class BreezeAbilityShard: Item("breeze_ability_shard") {
         override val name: String = "Ability Shard (Breeze)"
-        override val material: Material = Material.IRON_INGOT
+        override val material: Material = Material.PRISMARINE_SHARD
         override val lore: List<String> = listOf("A §erefined §7ability shard, housing", "the ability ${Rarity.EPIC.s}Dash")
         override val rarity: Rarity = Rarity.EPIC
-        override val hasGlint: Boolean = false
+        override val hasGlint: Boolean = true
         override val customModelData: Int = 5002
 
         override fun onRightClick(p: Player) {
@@ -222,12 +222,67 @@ object CItems {
         }
     }
 
+    class RerollBook: Item("reroll_book") {
+        override val name: String = "Reroll Book"
+        override val material: Material = Material.BOOK
+        override val lore: List<String> = listOf("§6RIGHT CLICK §7to reroll your", "§dSignature Class")
+        override val rarity: Rarity = Rarity.EPIC
+        override val hasGlint: Boolean = true
+        override val customModelData: Int = 1002
+
+        override fun onRightClick(p: Player) {
+            removeItem(p, CItems.rerollBook.getItem(1), 1)
+            val c: SignatureClasses.Signature = SignatureClasses.list.random()
+            DataStore.player["${p.uniqueId}"]!!.signatureClass = c.name
+            p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f)
+            p.sendMessage("§aYou got class: " + c.color + c.name.replaceFirstChar { it.titlecase() })
+        }
+
+        override fun onLeftClick(p: Player) {
+            return
+        }
+
+        override fun onShiftRightClick(p: Player) {
+            onRightClick(p)
+        }
+
+        override fun onShiftLeftClick(p: Player) {
+            return
+        }
+    }
+
+    class DragonHorn: Item("dragon_horn") {
+        override val name: String = "Dragon Horn"
+        override val material: Material = Material.ECHO_SHARD
+        override val lore: List<String> = listOf("The horn of a mighty dragon that once", "roamed the sky")
+        override val rarity: Rarity = Rarity.LEGENDARY
+        override val hasGlint: Boolean = false
+        override val customModelData: Int = 1003
+
+        override fun onRightClick(p: Player) {
+            return
+        }
+
+        override fun onLeftClick(p: Player) {
+            return
+        }
+
+        override fun onShiftRightClick(p: Player) {
+            return
+        }
+
+        override fun onShiftLeftClick(p: Player) {
+            return
+        }
+    }
 
     val sack: Item = Sack()
     val shell: Item = Shell()
     val abilityShard: Item = AbilityShard()
     val dragonAbilityShard: Item = DragonAbilityShard()
     val breezeAbilityShard: Item = BreezeAbilityShard()
+    val rerollBook: Item = RerollBook()
+    val dragonHorn: Item = DragonHorn()
 
     fun getItem(s: String): Item {
         return when (s.lowercase()) {
@@ -235,7 +290,9 @@ object CItems {
             shell.id -> shell
             abilityShard.id -> abilityShard
             dragonAbilityShard.id -> dragonAbilityShard
-            breezeAbilityShard.id -> dragonAbilityShard
+            breezeAbilityShard.id -> breezeAbilityShard
+            dragonHorn.id -> dragonHorn
+            rerollBook.id -> rerollBook
             else -> sack
         }
     }

@@ -1,5 +1,5 @@
 name: Sacks
-version: '2.0'
+version: '2.0-SNAPSHOT-3'
 main: me.kafae.sacks.Sacks
 api-version: '1.21'
 commands:
@@ -16,3 +16,6 @@ commands:
     usage: /cgive <item_id> <count>
     permission: op
     permission-message: You do not have permission to use this command.
+  sack:
+    description: Give player a sack
+    usage: /sack
