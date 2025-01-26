@@ -56,30 +56,22 @@ object Abilities {
                 }
             }
 
-            for (i in 0..10) {
-                val distance: Double = 5 * (i / 10.0)
-                for (j in 0..40) {
-                    val angle = j * (2 * Math.PI / 40)
-                    val x = cos(angle) * distance
-                    val z = sin(angle) * distance
-                    for (k in -distance.toInt()..distance.toInt()) {
-                        val particleLocation = p.eyeLocation.clone().add(p.eyeLocation.direction.clone().multiply(distance)).add(x, k.toDouble(), z)
-                        p.world.spawnParticle(Particle.DRAGON_BREATH, particleLocation, 5, 0.0, 0.0, 0.0, 0.0)
-                    }
-                }
+            val step: Vector = p.eyeLocation.direction.normalize().multiply(1)
+
+            for (i in 0..5) {
+                val loc: Location = p.eyeLocation.add(step)
+                p.world.spawnParticle(Particle.DRAGON_BREATH, loc, 100)
             }
-
-
 
             for (e in entites) {
                 e as LivingEntity
-                damageEntity(e, 10.0)
+                damageEntity(e, 10.0, p)
                 e.addPotionEffect(PotionEffect(PotionEffectType.WITHER, 100 ,2))
                 e.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 100, 0))
                 e.velocity = e.eyeLocation.direction.multiply(-5)
             }
 
-            p.sendMessage("§bUsed ability ${CItems.dragonAbilityShard.rarity.s}Dragons's Breath §f| §e-100 ⚡")
+            p.sendMessage("§bUsed ability ${CItems.dragonAbilityShard.rarity.s}Dragon's Breath §f| §e-100 ⚡")
         }
     }
 

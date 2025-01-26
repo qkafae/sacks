@@ -8,7 +8,6 @@ fun removeItem(p: Player, i: ItemStack, n: Int): Boolean {
     var remainingAmount = n
     var totalAmount = 0
 
-
     for (item in p.inventory.contents) {
         if (item != null && item.hasItemMeta() && item.itemMeta?.hasCustomModelData() == true) {
             if (item.itemMeta!!.customModelData == customModelData) {

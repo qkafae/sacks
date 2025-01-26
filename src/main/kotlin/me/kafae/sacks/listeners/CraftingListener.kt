@@ -43,6 +43,8 @@ class CraftingListener: Listener {
                                         e.isCancelled = true
                                     } else {
                                         if (mat[i].amount < 2) {
+                                            e.isCancelled = true
+                                        } else {
                                             mat[i].amount--
                                         }
                                     }

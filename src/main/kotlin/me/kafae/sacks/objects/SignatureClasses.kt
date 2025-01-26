@@ -72,7 +72,7 @@ object SignatureClasses {
                     val nearbyEntities = p.getNearbyEntities(5.0, 5.0, 5.0)
                     nearbyEntities?.forEach { e: Entity? ->
                         if (e is LivingEntity && e !is Villager && e != p) {
-                            damageEntity(e, damage)
+                            damageEntity(e, damage, p)
                             e.addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 30, 2))
                             e.world.playSound(e, Sound.ENTITY_GENERIC_SPLASH, 1.0f, 1.0f)
                         }
@@ -145,7 +145,7 @@ object SignatureClasses {
             nearbyEntities?.forEach { e: Entity? ->
                 if (e is LivingEntity && e !is Villager && e != p) {
                     e.world.playSound(e, Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f)
-                    damageEntity(e, dmg)
+                    damageEntity(e, dmg, p)
                     e.velocity = Vector(0.0, 2.0, 0.0)
                 }
             }
@@ -339,15 +339,15 @@ object SignatureClasses {
                 val x = r * cos(Math.toRadians(angle.toDouble()))
                 val z = r * sin(Math.toRadians(angle.toDouble()))
                 val particleLocation: Location = p.location.clone().add(x, 0.0, z)
-                p.world.spawnParticle(Particle.LANDING_HONEY, particleLocation, 10)
+                p.world.spawnParticle(Particle.LANDING_HONEY, particleLocation, 100)
             }
 
             for (e in p.getNearbyEntities(r, r, r)) {
                 if (e is LivingEntity && e !is Villager && e != p) {
                     e.world.strikeLightningEffect(e.location)
-                    damageEntity(e, 10.0)
+                    damageEntity(e, 10.0, p)
                     e.fireTicks = 1000
-                    e.location.block.type = Material.COBWEB
+                    e.location.add(0.0, 1.0, 0.0).block.type = Material.COBWEB
                     p.addPotionEffect(PotionEffect(PotionEffectType.HUNGER, 100, 0))
                     e.removePotionEffect(PotionEffectType.FIRE_RESISTANCE)
                 }

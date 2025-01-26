@@ -24,7 +24,7 @@ class DamageListenter: Listener {
                     val chance: Int = (50 + ((DataStore.player["${p.uniqueId}"]?.shells ?: 0) * 5)).coerceAtMost(100)
                     val rng: Int = Random.nextInt(1 , 100)
                     if (rng in 1..chance) {
-                        damagePlayer((e.entity as Player), 1.0)
+                        damagePlayer((e.entity as Player), 1.0, p)
                     }
                 }
                 SignatureClasses.thunder -> {

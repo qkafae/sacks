@@ -93,7 +93,8 @@ class Sacks : JavaPlugin() {
         server.pluginManager.registerEvents(TeleportListener(), this) //food consume listener
         server.pluginManager.registerEvents(InteractionListener(), this)  //interaction listener
         server.pluginManager.registerEvents(InventoryListener(), this) //inv listener
-        server.pluginManager.registerEvents(DeathListener(), this) //death listener
+        server.pluginManager.registerEvents(PlayerDeathListener(), this) //player death listener
+        server.pluginManager.registerEvents(EntityDeathListener(), this) //entity death listener
         server.pluginManager.registerEvents(CraftingListener(), this) //crafting listener
         server.pluginManager.registerEvents(RespawnListener(), this) //respawn listener
         logger.info("Registered all events!")

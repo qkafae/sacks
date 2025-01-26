@@ -45,11 +45,13 @@ class InventoryListener: Listener {
                                             DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = "dragons_breath"
                                             p.sendMessage("§2You equipped ability ${CItems.Rarity.MYTHIC.s}Dragon's Breath §2to your ${index + 1}st slot!")
                                             SacksGUI.main(p)
+                                            removeItem(p, CItems.dragonAbilityShard.getItem(1), 1)
                                         }
                                         5002 -> {
                                             DataStore.player["${p.uniqueId}"]!!.equippedAbilities[index] = "dash"
                                             p.sendMessage("§2You equipped ability ${CItems.Rarity.EPIC.s}Dash §2to your ${index + 1}st slot!")
                                             SacksGUI.main(p)
+                                            removeItem(p, CItems.breezeAbilityShard.getItem(1), 1)
                                         }
                                         else -> return
                                     }
