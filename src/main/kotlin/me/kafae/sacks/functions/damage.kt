@@ -10,7 +10,7 @@ fun damageEntity(e: LivingEntity, n: Double, p: Player) {
     h = (h - n).coerceAtLeast(0.0)
     e.world.playSound(e.location, Sound.ENTITY_GENERIC_HURT, 1.0f, 1.0f)
     e.health = h
-    e.damage(0.01, p as DamageSource)
+    e.damage(0.01)
 }
 
 fun damagePlayer(e: Player, n: Double, p: Player) {
@@ -18,5 +18,5 @@ fun damagePlayer(e: Player, n: Double, p: Player) {
     h = (h - n).coerceAtLeast(0.0)
     e.world.playSound(e.location, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f)
     e.health = h
-    e.damage(0.01, p as DamageSource)
+    e.damage(0.01)
 }

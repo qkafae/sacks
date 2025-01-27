@@ -15,6 +15,11 @@ class InteractionListener: Listener {
     private fun onInteract(e: PlayerInteractEvent) {
         val item: ItemStack = e.player.inventory.itemInMainHand
 
+        if (item.type == Material.ENDER_PEARL) {
+            e.isCancelled = true
+            return
+        }
+
         try {
             if (item.type != Material.AIR && e.item!!.hasItemMeta()) {
                 if (item.itemMeta!!.hasCustomModelData()) {

@@ -339,7 +339,7 @@ object SignatureClasses {
                 val x = r * cos(Math.toRadians(angle.toDouble()))
                 val z = r * sin(Math.toRadians(angle.toDouble()))
                 val particleLocation: Location = p.location.clone().add(x, 0.0, z)
-                p.world.spawnParticle(Particle.LANDING_HONEY, particleLocation, 100)
+                p.world.spawnParticle(Particle.FLAME, particleLocation, 100)
             }
 
             for (e in p.getNearbyEntities(r, r, r)) {

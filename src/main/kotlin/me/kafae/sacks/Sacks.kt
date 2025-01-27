@@ -97,6 +97,7 @@ class Sacks : JavaPlugin() {
         server.pluginManager.registerEvents(EntityDeathListener(), this) //entity death listener
         server.pluginManager.registerEvents(CraftingListener(), this) //crafting listener
         server.pluginManager.registerEvents(RespawnListener(), this) //respawn listener
+        server.pluginManager.registerEvents(EntityTransformListener(), this) //transofmr listener
         logger.info("Registered all events!")
 
         shellRecipe(this) //energy shell recipe
