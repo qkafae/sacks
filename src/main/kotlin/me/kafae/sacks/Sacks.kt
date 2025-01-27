@@ -18,16 +18,16 @@ class Sacks : JavaPlugin() {
     //energy regen
     private fun regen() {
         object: BukkitRunnable() {
-            private var n: Boolean = false
+            var n: Boolean = false
             override fun run() {
                 for (p in Bukkit.getOnlinePlayers()) {
                     enchantCheck(p)
                     var playerData: DataStore.PlayerData
                     if (!n) {
-                        playerData = Energy.add(50, p)
+                        playerData = Energy.add(1, p)
                         n = true
                     } else {
-                        playerData = DataStore.player["${p.uniqueId}"] as DataStore.PlayerData
+                        playerData = Energy.add(0, p)
                         n = false
                     }
                     p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent("§f${playerData.energy}%§e ⚡"))
